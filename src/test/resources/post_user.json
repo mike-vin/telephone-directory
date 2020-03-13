@@ -1,0 +1,19 @@
+{
+  "firstName": "firstName",
+  "secondName": "secondName",
+  "lastName": "lastName",
+  "phoneNumbers": [
+    {
+      "number": "0633798443",
+      "company": {
+        "name": "Life"
+      }
+    },
+    {
+      "number": "0635773180",
+      "company": {
+        "name": "Life"
+      }
+    }
+  ]
+}
