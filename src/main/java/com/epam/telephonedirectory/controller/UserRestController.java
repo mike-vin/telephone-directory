@@ -5,6 +5,7 @@ import com.epam.telephonedirectory.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,49 +23,50 @@ import java.util.Collection;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/user/rest")
+public class UserRestController {
     private UserService service;
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        log.debug("create User: {}", user.toString());
-        return service.insert(user);
+    public ResponseEntity<User> create(@RequestBody User user) {
+        log.info("create User: {}", user.toString());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.insert(user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
-        log.debug("delete User: id = '{}'", id);
+        log.info("delete User: id = '{}'", id);
         service.delete(id);
         return ResponseEntity.accepted().build();
     }
 
     @PatchMapping
     public ResponseEntity<User> edit(@RequestBody User user) {
-        log.debug("edit User: {}", user.toString());
-        service.update(user);
-        return ResponseEntity.accepted().body(user);
+        log.info("edit User: {}", user.toString());
+        return ResponseEntity
+                .accepted()
+                .body(service.update(user));
     }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable(name = "id") Long id) {
-        log.debug("Find User By Id  ='{}'", id);
+        log.info("Find User By Id  ='{}'", id);
         return service.findById(id);
     }
 
     @GetMapping("/all")
     public Collection<User> findAll() {
-        log.debug("findAll Users");
+        log.info("findAll Users");
         return service.findAll();
     }
 
 
     @GetMapping(value = "/all/pdf")
     public ResponseEntity<?> downloadAllPDF() {
-        log.debug("download All Users .PDF");
-
+        log.info("download All Users .PDF");
         ByteArrayInputStream allInPDF = service.findAllInPDF();
-
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_PDF)
