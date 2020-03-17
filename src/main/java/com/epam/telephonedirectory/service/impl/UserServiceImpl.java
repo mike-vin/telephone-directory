@@ -1,18 +1,25 @@
 package com.epam.telephonedirectory.service.impl;
 
 import com.epam.telephonedirectory.domain.User;
+import com.epam.telephonedirectory.exception.JsonFileMappingException;
 import com.epam.telephonedirectory.exception.NotFoundException;
 import com.epam.telephonedirectory.exception.PdfCreationException;
 import com.epam.telephonedirectory.repository.UserRepository;
 import com.epam.telephonedirectory.service.UserService;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -22,6 +29,7 @@ import java.util.function.Supplier;
 public class UserServiceImpl implements UserService {
     private static final String USER_NOT_FOUND = "User with id='%d' not found";
 
+    private ObjectMapper objectMapper;
     private UserRepository repository;
 
     @Override
@@ -76,5 +84,16 @@ public class UserServiceImpl implements UserService {
             throw new PdfCreationException(e.getMessage());
         }
 
+    }
+
+    @Override
+    public void insert(MultipartFile jsonFile) {
+        try {
+            CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, User.class);
+            List<User> users = objectMapper.readValue(jsonFile.getInputStream(), collectionType);
+            repository.saveAll(users);
+        } catch (IOException e) {
+            throw new JsonFileMappingException(e.getMessage());
+        }
     }
 }

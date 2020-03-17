@@ -27,9 +27,9 @@
         <label for="primaryPhoneOperator"></label>
         <select id="primaryPhoneOperator" name="primaryPhoneOperator">
             <option hidden>Operator</option>
-            <option>Life</option>
-            <option>Kyivstar</option>
-            <option>UMC</option>
+            <option value="Life" name="Life">Life</option>
+            <option value="Kyivstar" name="Kyivstar">Kyivstar</option>
+            <option value="UMC" name="UMC">UMC</option>
         </select><br><br>
 
         <label for="additionalPhone">Additional phone:</label>
@@ -38,9 +38,9 @@
         <label for="additionalPhoneOperator"></label>
         <select id="additionalPhoneOperator" name="additionalPhoneOperator">
             <option hidden>Operator</option>
-            <option>Life</option>
-            <option>Kyivstar</option>
-            <option>UMC</option>
+            <option value="Life" name="Life">Life</option>
+            <option value="Kyivstar" name="Kyivstar">Kyivstar</option>
+            <option value="UMC" name="UMC">UMC</option>
         </select><br><br>
 
         <input type="submit" value="Submit">
@@ -48,6 +48,7 @@
     </fieldset>
 </form>
 
+<h3><a href="/user/create/json">Create users by JSON file.</a></h3>
 
 </body>
 </html>

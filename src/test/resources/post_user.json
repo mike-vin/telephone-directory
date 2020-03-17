@@ -1,4 +1,4 @@
-{
+[{
   "firstName": "firstName",
   "secondName": "secondName",
   "lastName": "lastName",
@@ -16,4 +16,24 @@
       }
     }
   ]
+},
+{
+"firstName": "Mike",
+"secondName": "Vin",
+"lastName": "Fisher",
+"phoneNumbers": [
+{
+"number": "123456",
+"company": {
+"name": "Life"
 }
+},
+{
+"number": "987654321",
+"company": {
+"name": "Kyivstar"
+}
+}
+]
+}
+]

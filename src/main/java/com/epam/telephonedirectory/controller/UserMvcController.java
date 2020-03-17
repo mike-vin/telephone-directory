@@ -6,23 +6,20 @@ import com.epam.telephonedirectory.domain.User;
 import com.epam.telephonedirectory.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
+import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
 @Slf4j
 @Controller
@@ -34,6 +31,11 @@ public class UserMvcController {
     @GetMapping("create")
     public String createPage() {
         return "createUser";
+    }
+
+    @GetMapping("create/json")
+    public String batchCreatePage() {
+        return "jsonUpload";
     }
 
     @PostMapping
@@ -49,6 +51,25 @@ public class UserMvcController {
         modelAndView.addObject("message", "New user created:");
         modelAndView.addObject("entity", result);
         return modelAndView;
+    }
+
+    @PostMapping("create/json")
+    public ModelAndView batchCreate(@RequestParam("file") MultipartFile jsonFile) {
+        requireValidFile(jsonFile);
+        log.info("batch Create User JSON file-'{}', Size-'{}'", jsonFile.getOriginalFilename(), jsonFile.getSize());
+
+        service.insert(jsonFile);
+        return findAll();
+    }
+
+    private void requireValidFile(MultipartFile jsonFile) {
+        Objects.requireNonNull(jsonFile, "Invalid file");
+
+        String fileName = jsonFile.getOriginalFilename();
+        if (isNotEmpty(fileName) && fileName.substring(fileName.lastIndexOf('.')).equalsIgnoreCase(".json")) {
+            return;
+        }
+        throw new IllegalArgumentException("Invalid file type. Must be '.json' extension!");
     }
 
     private Set<Telephone> extractPhones(MultiValueMap<String, String> formData) {

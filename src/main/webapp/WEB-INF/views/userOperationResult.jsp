@@ -32,6 +32,6 @@
     </td>
 </table>
 
-
+<h4><a href="/user/all">To all users</a></h4>
 </body>
 </html>
