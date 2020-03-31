@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Slf4j
 @ControllerAdvice
 public class AdviceController {
 
     @ExceptionHandler({NotFoundException.class, EmptyResultDataAccessException.class})
     public ModelAndView notFoundException(Exception e) {
-        log(e);
+        log.error("Message = {}, Cause= {}", e.getMessage(), e.getCause());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setStatus(HttpStatus.BAD_REQUEST);
@@ -29,7 +28,7 @@ public class AdviceController {
 
     @ExceptionHandler(PdfCreationException.class)
     public ModelAndView notFoundException(PdfCreationException e) {
-        log.info("Message = {}, Cause= {}", e.getMessage(), e.getCause());
+        log.error("Message = {}, Cause= {}", e.getMessage(), e.getCause());
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,8 +39,4 @@ public class AdviceController {
         return modelAndView;
     }
 
-
-    private void log(Exception e) {
-        log.error("Message = {}, Cause= {}", e.getMessage(), e.getCause());
-    }
 }

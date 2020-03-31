@@ -14,6 +14,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
+        log.info("update(User '{}')", user);
         return repository.save(user);
     }
 
