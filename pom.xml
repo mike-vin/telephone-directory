@@ -22,7 +22,7 @@
         <jstl.version>1.2.2</jstl.version>
         <pdfbox.version>2.0.24</pdfbox.version>
         <taglibs.version>1.1.2</taglibs.version>
-        <itextpdf.version>5.5.10</itextpdf.version>
+        <itextpdf.version>5.5.13.3</itextpdf.version>
         <embed-jasper.version>9.0.2</embed-jasper.version>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
